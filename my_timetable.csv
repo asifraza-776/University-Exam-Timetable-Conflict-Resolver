@@ -1,0 +1,16 @@
+Time Slot,Course ID,Course Name
+Slot 1,CS101,Intro to Programming
+Slot 1,ECO101,Microeconomics
+Slot 1,PHY102,Physics II
+Slot 1,ENG102,Advanced English
+Slot 2,CS102,Data Structures
+Slot 2,HIS101,World History
+Slot 2,MTH101,Calculus I
+Slot 3,CHM101,Chemistry I
+Slot 3,CS201,Algorithms
+Slot 3,MTH102,Calculus II
+Slot 4,CS301,Operating Systems
+Slot 4,PHY101,Physics I
+Slot 4,ENG101,English Literature
+Slot 5,PSY101,Intro to Psychology
+Slot 5,MTH201,Linear Algebra
