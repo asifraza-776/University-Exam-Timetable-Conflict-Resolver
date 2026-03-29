@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+server.js
+main.py
+sample_courses.csv
+sample_students.csv
+timetable_graph.png
+timetable_output.csv
+node_modules/
