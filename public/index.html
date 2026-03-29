@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exam Timetable Resolver</title>
-    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
         
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
 
         body {
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
@@ -21,7 +25,10 @@
             overflow-x: hidden;
         }
 
-        .container { width: 100%; max-width: 1100px; }
+        .container {
+            width: 100%;
+            max-width: 1100px;
+        }
 
         h1 {
             text-align: center;
@@ -31,6 +38,7 @@
             background: -webkit-linear-gradient(45deg, #00C9FF 0%, #92FE9D 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0px 4px 15px rgba(0, 201, 255, 0.3);
         }
 
         p.subtitle {
@@ -58,7 +66,11 @@
             box-shadow: 0 15px 40px 0 rgba(0, 0, 0, 0.5);
         }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
 
         .file-upload {
             position: relative;
@@ -71,54 +83,114 @@
             transition: all 0.3s ease;
         }
 
-        .file-upload:hover { border-color: #00C9FF; background: rgba(0, 201, 255, 0.05); }
+        .file-upload:hover {
+            border-color: #00C9FF;
+            background: rgba(0, 201, 255, 0.05);
+        }
 
         .file-upload input[type="file"] {
-            position: absolute; width: 100%; height: 100%;
-            top: 0; left: 0; opacity: 0; cursor: pointer;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
         }
 
-        .file-upload h3 { font-size: 1.2rem; margin-bottom: 5px; color: #fff; }
-        .file-upload p { color: #8892b0; font-size: 0.9rem; }
-        .file-name { display: block; margin-top: 10px; color: #92FE9D; font-weight: 600; }
+        .file-upload h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .file-upload p {
+            color: #8892b0;
+            font-size: 0.9rem;
+        }
+        
+        .file-name {
+            display: block;
+            margin-top: 10px;
+            color: #92FE9D;
+            font-weight: 600;
+        }
 
         .submit-btn {
-            width: 100%; padding: 16px; border: none; border-radius: 12px;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
             background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
-            color: #1a1a2e; font-size: 1.2rem; font-weight: 800;
-            cursor: pointer; transition: filter 0.3s, transform 0.2s;
-            margin-top: 20px; box-shadow: 0px 4px 15px rgba(0, 201, 255, 0.4);
+            color: #1a1a2e;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: filter 0.3s, transform 0.2s;
+            margin-top: 20px;
+            box-shadow: 0px 4px 15px rgba(0, 201, 255, 0.4);
         }
-        .submit-btn:hover { filter: brightness(1.2); transform: scale(1.02); }
-        .submit-btn:disabled { background: #555; color: #888; cursor: not-allowed; transform: none; box-shadow: none; filter: none; }
 
-        .loader { display: none; text-align: center; margin: 20px 0; }
+        .submit-btn:hover {
+            filter: brightness(1.2);
+            transform: scale(1.02);
+        }
+        
+        .submit-btn:disabled {
+            background: #555;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            filter: none;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
         .spinner {
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             border: 4px solid rgba(255,255,255,0.1);
             border-top-color: #00C9FF;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto;
         }
+
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        .results { display: none; animation: fadeIn 0.8s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-
-        @media (max-width: 768px) {
-            .form-grid, .results-grid { grid-template-columns: 1fr; }
-            h1 { font-size: 2rem; }
+        .results {
+            display: none;
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        #graphCanvas {
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid, .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .graph-preview {
             width: 100%;
-            height: 420px;
             border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.4);
+            object-fit: contain;
         }
 
         .table-container {
@@ -128,79 +200,84 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        table { width: 100%; border-collapse: collapse; text-align: left; background: rgba(0, 0, 0, 0.2); }
-        th, td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
         th {
             background: rgba(0, 201, 255, 0.1);
-            color: #00C9FF; position: sticky; top: 0;
-            backdrop-filter: blur(10px); font-weight: 600;
+            color: #00C9FF;
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
         }
-        tr:hover td { background: rgba(255, 255, 255, 0.03); }
 
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
         .badge {
             background: rgba(146, 254, 157, 0.2);
-            color: #92FE9D; padding: 4px 8px;
-            border-radius: 4px; font-size: 0.85rem; font-weight: 600;
+            color: #92FE9D;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
 
-        .legend {
-            display: flex; flex-wrap: wrap; gap: 10px;
-            margin-top: 12px;
-        }
-        .legend-item {
-            display: flex; align-items: center; gap: 6px;
-            font-size: 0.85rem; color: #b0c4de;
-        }
-        .legend-dot {
-            width: 14px; height: 14px; border-radius: 50%;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Algorithm Visualizer</h1>
-    <p class="subtitle">Resolve University Exam Conflicts via Welsh-Powell Graph Coloring</p>
+    <p class="subtitle">Resolve University Exam Conflicts via Graph Coloring</p>
 
     <div class="glass-card">
         <form id="uploadForm">
             <div class="form-grid">
                 <div class="file-upload">
-                    <input type="file" id="coursesFile" accept=".csv" required
-                           onchange="document.getElementById('c-name').innerText = this.files[0].name">
-                    <h3>📚 Courses Data</h3>
+                    <input type="file" id="coursesFile" accept=".csv" required onchange="document.getElementById('c-name').innerText = this.files[0].name">
+                    <h3>Courses Data</h3>
                     <p>Upload courses CSV</p>
                     <span class="file-name" id="c-name"></span>
                 </div>
                 <div class="file-upload">
-                    <input type="file" id="studentsFile" accept=".csv" required
-                           onchange="document.getElementById('s-name').innerText = this.files[0].name">
-                    <h3>🎓 Student Enrollments</h3>
+                    <input type="file" id="studentsFile" accept=".csv" required onchange="document.getElementById('s-name').innerText = this.files[0].name">
+                    <h3>Student Enrollments</h3>
                     <p>Upload students CSV</p>
                     <span class="file-name" id="s-name"></span>
                 </div>
             </div>
-            <button type="submit" class="submit-btn" id="submitBtn">⚡ Generate Optimal Timetable</button>
+            <button type="submit" class="submit-btn" id="submitBtn">Generate Optimal Timetable</button>
         </form>
     </div>
 
     <div class="loader" id="loader">
         <div class="spinner"></div>
-        <p style="margin-top: 15px; color: #00C9FF;">Running Welsh-Powell Algorithm...</p>
+        <p style="margin-top: 15px; color: #00C9FF;">Calculating Graph Coordinates...</p>
     </div>
 
     <div class="results" id="resultsBlock">
-        <h2 style="margin-bottom: 20px; text-align: center; color: #92FE9D;">✅ Optimization Complete!</h2>
-
+        <h2 style="margin-bottom: 20px; text-align: center; color: #92FE9D;">Optimization Complete!</h2>
+        
         <div class="results-grid">
             <div class="glass-card" style="margin-bottom: 0;">
-                <h3 style="margin-bottom: 15px; color: #00C9FF;">🕸️ Conflict Graph (Interactive)</h3>
-                <div id="graphCanvas"></div>
-                <div class="legend" id="graphLegend"></div>
+                <h3 style="margin-bottom: 15px; color: #00C9FF;">Conflict Graph Visualization</h3>
+                <img id="graphOutput" class="graph-preview" src="" alt="Networkx Graph" />
             </div>
 
             <div class="glass-card" style="margin-bottom: 0; padding: 0; overflow: hidden;">
-                <h3 style="margin: 20px 20px 15px 20px; color: #00C9FF;">📅 Generated Schedule</h3>
+                <h3 style="margin: 20px 20px 15px 20px; color: #00C9FF;">Generated Schedule</h3>
                 <div class="table-container">
                     <table id="dataTable">
                         <thead>
@@ -210,7 +287,9 @@
                                 <th>Course Name</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            <!-- Dynamic Rows -->
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -219,18 +298,12 @@
 </div>
 
 <script>
-    const SLOT_COLORS = [
-        '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4',
-        '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F',
-        '#BB8FCE', '#85C1E9', '#F0B27A', '#82E0AA'
-    ];
-
     document.getElementById('uploadForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-
+        
         const coursesFile = document.getElementById('coursesFile').files[0];
         const studentsFile = document.getElementById('studentsFile').files[0];
-
+        
         if (!coursesFile || !studentsFile) {
             alert("Please upload both CSV files.");
             return;
@@ -243,7 +316,7 @@
         const btn = document.getElementById('submitBtn');
         const loader = document.getElementById('loader');
         const results = document.getElementById('resultsBlock');
-
+        
         btn.disabled = true;
         btn.innerText = "Processing...";
         results.style.display = 'none';
@@ -255,89 +328,39 @@
                 body: formData
             });
             const data = await res.json();
-
+            
             if (res.ok) {
-                // ── Populate Table ──────────────────────────────────
+                // Populate image
+                document.getElementById('graphOutput').src = data.imageUrl;
+                
+                // Populate table
                 const tbody = document.querySelector('#dataTable tbody');
                 tbody.innerHTML = '';
+                
                 data.timetable.forEach(row => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td><span class="badge">${row['Time Slot']}</span></td>
-                        <td style="font-weight:bold;">${row['Course ID']}</td>
-                        <td style="color:#b0c4de;">${row['Course Name']}</td>
+                        <td style="font-weight: bold;">${row['Course ID']}</td>
+                        <td style="color: #b0c4de;">${row['Course Name']}</td>
                     `;
                     tbody.appendChild(tr);
                 });
 
-                // ── Render vis-network Graph ────────────────────────
-                renderGraph(data.graphData);
-
                 results.style.display = 'block';
             } else {
-                alert("Error: " + (data.error || "Failed to generate timetable"));
+                alert("Error: " + (data.error || "Failed to generate"));
+                console.error(data.details);
             }
         } catch (err) {
             console.error(err);
-            alert("Network error: " + err.message);
+            alert("Network error occurred.");
         } finally {
             btn.disabled = false;
-            btn.innerText = "⚡ Generate Optimal Timetable";
+            btn.innerText = "Generate Optimal Timetable";
             loader.style.display = 'none';
         }
     });
-
-    function renderGraph(graphData) {
-        const container = document.getElementById('graphCanvas');
-        const legend = document.getElementById('graphLegend');
-        legend.innerHTML = '';
-
-        // Build vis nodes with color by slot
-        const nodes = new vis.DataSet(graphData.nodes.map(n => ({
-            id: n.id,
-            label: n.id,
-            title: `${n.id}: ${n.name}\nSlot ${n.slot + 1}`,
-            color: {
-                background: SLOT_COLORS[n.slot % SLOT_COLORS.length],
-                border: '#ffffff',
-                highlight: { background: '#ffffff', border: '#00C9FF' }
-            },
-            font: { color: '#1a1a2e', bold: true, size: 14 },
-            size: 28,
-            shape: 'dot'
-        })));
-
-        const edges = new vis.DataSet(graphData.edges.map(e => ({
-            from: e.from,
-            to: e.to,
-            color: { color: 'rgba(255,255,255,0.2)', highlight: '#00C9FF' },
-            width: 1.5
-        })));
-
-        const options = {
-            physics: {
-                enabled: true,
-                stabilization: { iterations: 150 },
-                barnesHut: { gravitationalConstant: -3000, springLength: 120 }
-            },
-            interaction: { hover: true, tooltipDelay: 100 },
-            layout: { improvedLayout: true }
-        };
-
-        new vis.Network(container, { nodes, edges }, options);
-
-        // Build slot legend
-        const slots = [...new Set(graphData.nodes.map(n => n.slot))].sort((a,b) => a-b);
-        slots.forEach(slot => {
-            const item = document.createElement('div');
-            item.className = 'legend-item';
-            item.innerHTML = `
-                <div class="legend-dot" style="background:${SLOT_COLORS[slot % SLOT_COLORS.length]}"></div>
-                <span>Slot ${slot + 1}</span>
-            `;
-            legend.appendChild(item);
-        });
-    }
 </script>
 </body>
 </html>
