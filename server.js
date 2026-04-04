@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.static('public'));
@@ -41,11 +41,12 @@ app.post('/api/generate-timetable', upload.fields([{ name: 'courses', maxCount: 
         fs.mkdirSync('public', { recursive: true });
     }
 
-    // Spawn Python Subprocess - using local .venv to ensure networkx/matplotlib exist
-    const pythonExecutable = path.resolve('.venv/Scripts/python.exe');
+    // Spawn Python Subprocess. Use env var, Windows local .venv, or default to python3
+    const isWindows = process.platform === "win32";
+    const pythonExecutable = process.env.PYTHON_PATH || (isWindows ? path.resolve('.venv/Scripts/python.exe') : 'python3');
     const mainScript = path.resolve('main.py');
     
-    console.log(`Executing python algorithm on uploaded datasets...`);
+    console.log(`Executing python algorithm on uploaded datasets using ${pythonExecutable}...`);
     const pythonProcess = spawn(pythonExecutable, [
         mainScript,
         '--courses', coursesPath,

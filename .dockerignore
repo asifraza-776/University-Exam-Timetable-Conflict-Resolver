@@ -1,0 +1,9 @@
+node_modules
+.venv
+uploads
+.git
+.gitignore
+*.png
+*.csv
+!sample_courses.csv
+!sample_students.csv
